@@ -31,7 +31,7 @@ template = "onera-m6-sharp_airfoil" #don't add .sim afterwards
 hostname = "login-phoenix.pace.gatech.edu",
 port = 22,
 username = "jyoun39",
-password = "96385207410yJ____"
+password = ""
 
 # # MUST SPECIFY --> Job submission details
 account = "gts-cperron7"
