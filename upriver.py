@@ -60,7 +60,7 @@ batch.read_batch_file()
 ssh = ssh_connection_details(hostname, port, username, password) #could make this global, but it is easier this way imo
 job = job_submission_details(account, nodes, taskspernode, mempercpu, time, qos, email) #could make this global, but it is easier this way imo
 
-#main for loop to creat .java, add parameters to .java, copy over .java and .sim files, then submit job on cluster
+#main for loop to create .java, add parameters to .java, copy over .java and .sim files, then submit job on cluster
 for row_index in range(batch.num_rows):
     start_macro_writer(row_index, parameters_to_add, batch, general) #this is good
     append_macro_writer(row_index, parameters_to_add, batch, general)
