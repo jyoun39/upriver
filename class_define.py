@@ -8,36 +8,27 @@ class batch_file_details:
         self.batch_file_path = batch_file_path
         self.batch_data = None
         self.headers = []
-        self.parameters = []
-        self.batch_parameter_data = None
         self.num_rows = 0
         self.num_columns = 0
-        self.case_name = None
-
+        self.column_data = {}  # Initialize an empty dictionary to store column data
+    
     def read_batch_file(self):
         try:
             # Read the CSV file
             self.batch_data = pd.read_csv(self.batch_file_path)
             
-            # Select columns from the second to the end
+            # Get column headers
             self.headers = self.batch_data.columns.tolist()
-            self.parameters = self.headers[1:]
+            self.num_rows, self.num_columns = self.batch_data.shape
 
-            self.batch_parameter_data = self.batch_data.iloc[:, 1:]
-            self.num_rows, self.num_columns = self.batch_parameter_data.shape
-
-            target_header = 'case_name'
-            if target_header in self.batch_data.columns:
-                self.case_name = self.batch_data[target_header]
-            else:
-                print(f"Column '{target_header}' not found in the batch file.")
-            
-        except FileNotFoundError:
-            print(f"Batch file '{self.batch_file_path}' not found.")
+            # Process the data by columns
+            for column_index in range(self.num_columns):
+                column_name = self.headers[column_index]
+                self.column_data[column_name] = self.batch_data.iloc[:, column_index].tolist()
+        
         except Exception as e:
             print(f"An error occurred while reading the batch file: {e}")
-
-
+            
 # my_classes.py (continued)
 
 class general_details(batch_file_details):
@@ -49,9 +40,26 @@ class general_details(batch_file_details):
         self.copy = copy
         self.template = template
 
-    def process_file(self):
-        # Call read_batch_file from the base class to populate its attributes
-        self.read_batch_file()
+    # def SetRefLenth(self, __key:str, L:float):
+    #     self.store[__key] = {"type":RefType.length,"L":L}
+
+    # def SetRefArea(self, __key:str, A:float):
+    #     self.store[__key] = {"type":RefType.area,"A":A}
+
+    # def SetRefAngle(self, __key:str, theta:float):
+    #     self.store[__key] = {"type":RefType.angle,"theta":theta}
+
+    # def SetRefPositionVec(self, __key:str, pVec:list[float]):
+    #     self.store[__key] = {"type":RefType.positionvec,"pVec":pVec}
+
+    # def SetRefDensity(self, __key:str, rho:float):
+    #     self.store[__key] = {"type":RefType.density,"rho":rho}
+
+    # def SetRefVelocity(self, __key:str, v:float):
+    #     self.store[__key] = {"type":RefType.velocity,"v":v}
+    
+    # def SetRefTemperature(self, __key:str, T:float):
+    #     self.store[__key] = {"type":RefType.temperature,"T":T}
 
 class ssh_connection_details:
     def __init__(self, hostname, port, username, password):

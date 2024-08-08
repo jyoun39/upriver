@@ -1,10 +1,10 @@
 #def submit_job_script(case_name, template_name, account, nodes, taskspernode, mempercpu, time, qos, email):
 
-def submit_job_script(row_index, general, job):
+def submit_job_script(row_index, general, batch, job):
     import textwrap
     script_content = '''#!/bin/bash
 # ----------------SBATCH Parameters----------------- #
-#SBATCH --job-name='''+general.case_name[row_index]+'''
+#SBATCH --job-name='''+batch.column_data['case_name'][row_index]+'''
 #SBATCH --account='''+job.account+'''
 #SBATCH --nodes='''+job.nodes+'''
 #SBATCH --ntasks-per-node='''+job.taskspernode+'''
@@ -29,7 +29,7 @@ ASDL_BIN="/storage/coda1/p-cperron7/0/cperron7/bin"
 source $ASDL_BIN/starccm+/18.02.008-R8/activate
 
 # -------------Environment Variables---------------- #
-MACROFILE="'''+general.case_name[row_index]+'''.java run.java"
+MACROFILE="'''+batch.column_data['case_name'][row_index]+'''.java run.java"
 SIMFILE="'''+general.template+'''.sim"
 
 # -------------Generate Machine File---------------- #
@@ -46,12 +46,12 @@ starccm+ -licpath 27100@ugslic2.ecs.gatech.edu -machinefile ${MACHINEFILE} -np $
     import os
 
     # Create the directory
-    file_content_path = general.directory_path_local + general.case_name[row_index] + "\\submit_" + general.case_name[row_index] + ".sbatch"
+    file_content_path = general.directory_path_local + batch.column_data['case_name'][row_index] + "\\submit_" + batch.column_data['case_name'][row_index] + ".sbatch"
     with open(file_content_path, 'w') as file:
         # Convert Windows-style line endings to UNIX-style
         unix_script_content = script_content.replace('\r\n', '\n')
         file.write(unix_script_content)
 
-    print("submit_" + general.case_name[row_index] + ".sbatch added to " + file_content_path)
+    print("submit_" + batch.column_data['case_name'][row_index] + ".sbatch added to " + file_content_path)
 
 

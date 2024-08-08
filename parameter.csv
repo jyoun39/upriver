@@ -1,3 +1,4 @@
-﻿case_name,AoA,AoS
-case1,1,2
-case2,3,4
+﻿case_name,AoA,AoS,Mach
+case1,1,2,0.1
+case2,3,4,0.2
+case3,11,12,13
